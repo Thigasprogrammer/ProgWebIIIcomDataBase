@@ -19,10 +19,10 @@
     $password = "usbw";
     $dbname = "agenda";
 
-    $connection = new mysqli($servername, $username, $password, $dbname);
+    $connection = mysqli_connect($servername, $username, $password, $dbname);
 
-    if ($connection->connect_error) {
-        die("Erro na conexão: " . $connection->connect_error);
+    if (!$connection) {
+        die("Conexão falhou: " . mysqli_error($connection));
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -32,19 +32,19 @@
         $sql = "INSERT INTO compromissos (horario, descricao) 
                 VALUES ('$horacompromisso', '$descricao')";
 
-        if ($connection->query($sql) === TRUE) {
+        if (mysqli_query($connection, $sql) === TRUE) {
             echo "<p>Compromisso cadastrado com sucesso!</p>";
         } else {
-            echo "<p>Erro ao cadastrar: " . $connection->error . "</p>";
+            echo "<p>Erro ao cadastrar: " . mysqli_error($connection) . "</p>";
         }
     }
     
     $compromissos = [];
 
-    $resultado = $connection->query("SELECT id, horario, descricao FROM compromissos");
+    $resultado = mysqli_query($connection, "SELECT id, horario, descricao FROM compromissos");
 
     if ($resultado) {
-        while ($linha = $resultado->fetch_assoc()) {
+        while ($linha = mysqli_fetch_assoc($resultado)) {
             $compromissos[] = [
                 "id" => $linha["id"],
                 "horario" => substr($linha["horario"], 0, 5),
