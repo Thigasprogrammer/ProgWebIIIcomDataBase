@@ -56,7 +56,7 @@
 			listar();		
 		?>
 		<br>
-		<input type="button" value="Novo" onclick="window.location.href='pad.php'"> <br>
+		<input type="button" value="Cadastrar" onclick="window.location.href='pad.php'"> <br>
 	</body>
 </html> 	
 
